@@ -15,7 +15,7 @@ def adjacency(
 ) -> Any:
     """Adjacency from an edge list. Each edge is [a, b] or, with weighted,
     [a, b, w]. Unweighted returns a dict of lists in edge order; weighted a
-    dict of dicts, adj[a][b] = w. With n, nodes 0 to n - 1 are all keys,
+    dict of dicts, `adj[a][b] = w`. With n, nodes 0 to n - 1 are all keys,
     isolated ones with an empty list. reverse reads each edge as b to a.
     directed=False adds both directions."""
     adj: Any = defaultdict(dict) if weighted else defaultdict(list)
@@ -87,7 +87,7 @@ def levels(
 
     Every popped item is checked before it is yielded. With eq, lt, lte, gt or
     gte, an item whose value fails one of them is dropped; the value is
-    grid[item[0]][item[1]] when grid is given, else the item itself. With
+    `grid[item[0]][item[1]]` when grid is given, else the item itself. With
     seen, an item already in seen is dropped and a kept item is added to it,
     so the caller can push without checking.
     """

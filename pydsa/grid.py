@@ -139,7 +139,7 @@ def _spread(v: Any) -> Iterator[Any]:
 
 
 def put(grid: List[List[Any]], at: Iterable[Cell], v: Any) -> None:
-    """Set grid[i][j] = v for every (i, j) in at.
+    """Set `grid[i][j] = v` for every (i, j) in at.
 
     v is one value, or an iterable read once per cell in the order of at:
     put(dp, cells(dp), accumulate(...))."""

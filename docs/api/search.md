@@ -1,0 +1,3 @@
+# pydsa.search
+
+::: pydsa.search

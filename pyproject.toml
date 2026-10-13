@@ -24,8 +24,10 @@ dependencies = []
 [project.urls]
 Homepage = "https://github.com/shyal/pydsa"
 Repository = "https://github.com/shyal/pydsa"
+Documentation = "https://www.shyal.com/pydsa/"
 
 [project.optional-dependencies]
+docs = ["mkdocs-material>=9.5", "mkdocstrings[python]>=0.27", "ruff"]
 draw = ["rich", "colorama", "PrettyPrintTree", "graphviz"]
 test = ["pytest"]
 

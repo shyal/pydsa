@@ -10,7 +10,7 @@ def lcs(a: Sequence[Any], b: Sequence[Any], full: bool = False, type: Any = int)
     so row 0 and column 0 are the empty prefix. With type=int (the default)
     each cell holds the length; with type=str, list or tuple it holds one
     LCS itself, built as that type. Plain lcs(a, b) is the last cell,
-    dp[-1][-1]; full returns the whole table."""
+    `dp[-1][-1]`; full returns the whole table."""
     dp = table(len(a) + 1, len(b) + 1, fill=type())
     for i, j in cells(dp, start=1):
         x = a[i - 1]

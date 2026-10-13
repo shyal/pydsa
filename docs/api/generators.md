@@ -1,0 +1,3 @@
+# pydsa.generators
+
+::: pydsa.generators

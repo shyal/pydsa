@@ -1,0 +1,3 @@
+# pydsa.adj
+
+::: pydsa.adj

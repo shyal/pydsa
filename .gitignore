@@ -6,3 +6,4 @@ build/
 CLAUDE.md
 .ruff_cache/
 .envrc
+site/

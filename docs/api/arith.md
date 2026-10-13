@@ -1,0 +1,3 @@
+# pydsa.arith
+
+::: pydsa.arith

@@ -1,5 +1,7 @@
 # pydsa
 
+Documentation: [www.shyal.com/pydsa](https://www.shyal.com/pydsa/)
+
 Data structure and algorithm helpers for LeetCode-style Python: the
 functions one keeps rewriting at the top of a solution, written once and
 tested.
