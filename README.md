@@ -5,7 +5,7 @@ functions one keeps rewriting at the top of a solution, written once and
 tested.
 
 ```
-pip install dsa-py        # the import name is pydsa
+pip install pizza-lib   # the import name is pydsa
 ```
 
 ```python
@@ -44,7 +44,7 @@ output and `viz_binary_search` import rich, colorama, PrettyPrintTree and
 graphviz when first called:
 
 ```
-pip install 'dsa-py[draw]'
+pip install 'pizza-lib[draw]'
 ```
 
 Every function has a docstring with its contract; the tests in `tests/`
