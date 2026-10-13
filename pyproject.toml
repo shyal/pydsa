@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# "pydsa" is taken on PyPI (a dormant 2018 upload); the import name stays pydsa
+name = "dsa-py"
+version = "0.1.0"
+description = "Data structure and algorithm helpers for LeetCode-style Python: grids, adjacency, binary search bounds, heaps, trees, linked lists."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Shyal" }]
+keywords = ["leetcode", "algorithms", "data-structures", "grid", "graph", "heap", "binary-search"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Education",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/shyal/pydsa"
+Repository = "https://github.com/shyal/pydsa"
+
+[project.optional-dependencies]
+draw = ["rich", "colorama", "PrettyPrintTree", "graphviz"]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+include = ["pydsa*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+ignore = ["E501", "E731", "E741", "B007", "B905"]
