@@ -1140,8 +1140,8 @@ class Solution:
 | `heaps` | `maxheappush`, `maxheappop`, `maxheapify`, `maxheappushpop`, `maxheapreplace`, `maxheappeek`, `maxheapitems`, `heap`, `draw_heap` |
 | `counting` | `Multiset`, `count_pairs` |
 | `combo` | `pairs`, `triples` |
-| `digits` | `to_digits`, `to_int`, `even`, `odd` |
-| `arith` | `ceil_div`, `batched` |
+| `digits` | `to_digits`, `to_int`, `num_digits`, `even`, `odd` |
+| `arith` | `ceil_div`, `factorial`, `batched` |
 | `seq` | `lcs`, `max_diff` |
 | `generators` | `as_list` |
 | `nodes` | `TreeNode`, `ListNode`, `GraphNode`, `Node` |

@@ -1,7 +1,8 @@
 #
 # Digit helpers preloaded by sitecustomize: a number as its list of digits and
-# back, and the parity tests even and odd.
+# back, its count of digits, and the parity tests even and odd.
 
+from math import log2
 from typing import List, Union
 
 
@@ -25,6 +26,21 @@ def to_digits(num: Union[int, str], reverse: bool = False, base: int = 10) -> Li
                 break
         ds.reverse()
     return ds[::-1] if reverse else ds
+
+
+def num_digits(num: int, base: int = 10) -> int:
+    """The count of digits of num in the given base; 0 has one digit.
+
+    A negative int loses its sign. It does not convert num to a str, so it
+    is fast on big ints and has no int max str digits limit.
+    """
+    num = abs(num)
+    d = max(1, int(num.bit_length() / log2(base)))
+    while d > 1 and base ** (d - 1) > num:
+        d -= 1
+    while base**d <= num:
+        d += 1
+    return d
 
 
 def to_int(digits: List[int], reverse: bool = False, base: int = 10) -> int:

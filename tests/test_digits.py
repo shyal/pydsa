@@ -1,4 +1,4 @@
-from pydsa.digits import even, odd, to_digits, to_int
+from pydsa.digits import even, num_digits, odd, to_digits, to_int
 
 
 def test_to_digits_most_significant_first():
@@ -72,3 +72,24 @@ def test_even_odd():
     assert [even(n) for n in range(5)] == [True, False, True, False, True]
     assert [odd(n) for n in range(5)] == [False, True, False, True, False]
     assert even(-4) and odd(-3)
+
+
+def test_num_digits():
+    assert num_digits(0) == 1
+    assert num_digits(9) == 1
+    assert num_digits(10) == 2
+    assert num_digits(-31) == 2
+    assert num_digits(13, base=2) == 4
+
+
+def test_num_digits_powers_of_base_and_neighbours():
+    for b in (2, 3, 10, 16):
+        for k in range(1, 200):
+            assert num_digits(b**k - 1, b) == k
+            assert num_digits(b**k, b) == k + 1
+
+
+def test_num_digits_big_int():
+    from math import factorial
+
+    assert num_digits(factorial(10000)) == 35660
