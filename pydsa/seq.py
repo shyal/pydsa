@@ -1,4 +1,5 @@
-from typing import Any, Sequence
+from itertools import accumulate
+from typing import Any, Callable, Iterable, List, Optional, Sequence
 
 from .grid import cells, table
 
@@ -20,3 +21,29 @@ def lcs(a: Sequence[Any], b: Sequence[Any], full: bool = False, type: Any = int)
         else:
             dp[i][j] = max(dp[i - 1][j], dp[i][j - 1], key=None if type is int else len)
     return dp if full else dp[-1][-1]
+
+
+def max_diff(
+    xs: Iterable[Any],
+    by: Optional[Callable[[Any], Any]] = None,
+    reverse: bool = False,
+) -> List[Any]:
+    """The largest by(xs[j]) - by(xs[i]) with i < j, so far, for each j
+    from 1: one value per index after the first.
+
+    by(x) is the value compared; with by left out it is x itself. reverse
+    flips the difference to by(xs[i]) - by(xs[j]): the largest fall, not
+    the largest rise.
+
+    >>> max_diff([12, 6, 1, 2, 7])
+    [-6, -5, 1, 6]
+    >>> max_diff([12, 6, 1, 2, 7], reverse=True)
+    [6, 11, 11, 11]
+    >>> max([0, *max_diff([7, 6, 4, 3, 1])])
+    0
+    """
+    ys = [x if by is None else by(x) for x in xs]
+    if reverse:
+        ys = [-y for y in ys]
+    lows = accumulate(ys, min)
+    return list(accumulate((y - lo for y, lo in zip(ys[1:], lows)), max))

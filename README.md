@@ -32,7 +32,7 @@ first_true(1, 10**9, lambda x: x * x >= n)   # the first x in [1, 10^9] with ok(
 | `combo` | `pairs`, `triples` |
 | `digits` | `to_digits`, `to_int`, `even`, `odd` |
 | `arith` | `ceil_div`, `batched` |
-| `seq` | `lcs` |
+| `seq` | `lcs`, `max_diff` |
 | `generators` | `as_list` |
 | `nodes` | `TreeNode`, `ListNode`, `GraphNode`, `Node` |
 | `tree` | `build_tree`, `get_level_order`, `find_node`, `get_inorder`, `is_balanced`, `build_nary_tree`, `build_general_tree`, `get_general_tree`, `generate_random_tree`, `generate_full_binary_tree`, `draw_tree`, `draw_general_tree` |

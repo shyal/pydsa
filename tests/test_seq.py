@@ -1,4 +1,4 @@
-from pydsa.seq import lcs
+from pydsa.seq import lcs, max_diff
 
 
 def test_lcs_is_the_length_by_default():
@@ -24,3 +24,27 @@ def test_lcs_full_type_str_is_the_table_of_strings():
 
 def test_lcs_of_an_empty_input_is_empty():
     assert (lcs("", "abc"), lcs("", "", type=str)) == (0, "")
+
+
+def test_max_diff_is_the_best_rise_so_far():
+    assert max_diff([12, 6, 1, 2, 7]) == [-6, -5, 1, 6]
+
+
+def test_max_diff_reverse_is_the_best_fall_so_far():
+    assert max_diff([12, 6, 1, 2, 7], reverse=True) == [6, 11, 11, 11]
+
+
+def test_max_diff_by_compares_a_key():
+    assert max_diff(["ccc", "a", "bb"], by=len) == [-2, 1]
+
+
+def test_max_diff_of_fewer_than_two_items_is_empty():
+    assert max_diff([5]) == [] and max_diff([]) == []
+
+
+def test_max_diff_solves_121_and_2874():
+    # 121. Best Time to Buy and Sell Stock
+    assert max([0, *max_diff([7, 1, 5, 3, 6, 4])]) == 5
+    # 2874. Maximum Value of an Ordered Triplet II
+    a = [12, 6, 1, 2, 7]
+    assert max([0, *(f * x for f, x in zip(max_diff(a, reverse=True), a[2:]))]) == 77
