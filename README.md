@@ -395,6 +395,85 @@ class Solution:
 </details>
 
 ```mu
+# 583. Delete Operation for Two Strings (dynamic programming)
+class Solution
+  def minDistance(word1: str, word2: str) -> int
+    len(word1) + len(word2) - 2 * lcs(word1, word2)
+```
+
+<details><summary>pydsa</summary>
+
+```python
+# 583. Delete Operation for Two Strings (dynamic programming)
+from pydsa import lcs
+
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        return len(word1) + len(word2) - 2 * lcs(word1, word2)
+```
+
+</details>
+
+<details><summary>python</summary>
+
+```python
+# 583. Delete Operation for Two Strings (dynamic programming)
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        dp = list(range(len(word2) + 1))
+        for i, a in enumerate(word1, 1):
+            prev, dp[0] = dp[0], i
+            for j, b in enumerate(word2, 1):
+                prev, dp[j] = dp[j], prev if a == b else 1 + min(dp[j], dp[j - 1])
+        return dp[-1]
+```
+
+</details>
+
+```mu
+# 695. Max Area of Island (connected components)
+class Solution
+  def maxAreaOfIsland(grid: [[int]]) -> int
+    max from 0 for c in components(cells(grid, eq=1), p -> nbrs(grid, p, eq=1)): len(c)
+```
+
+<details><summary>pydsa</summary>
+
+```python
+# 695. Max Area of Island (connected components)
+from pydsa import cells, components, nbrs
+
+class Solution:
+    def maxAreaOfIsland(self, grid: list[list[int]]) -> int:
+        islands = components(cells(grid, eq=1), lambda p: nbrs(grid, p, eq=1))
+        return max(map(len, islands), default=0)
+```
+
+</details>
+
+<details><summary>python</summary>
+
+```python
+# 695. Max Area of Island (connected components)
+class Solution:
+    def maxAreaOfIsland(self, grid: list[list[int]]) -> int:
+        m, n, best = len(grid), len(grid[0]), 0
+        for i in range(m):
+            for j in range(n):
+                st, area = [(i, j)], 0
+                while st:
+                    a, b = st.pop()
+                    if 0 <= a < m and 0 <= b < n and grid[a][b] == 1:
+                        grid[a][b] = 0
+                        area += 1
+                        st += [(a + 1, b), (a - 1, b), (a, b + 1), (a, b - 1)]
+                best = max(best, area)
+        return best
+```
+
+</details>
+
+```mu
 # 743. Network Delay Time (Dijkstra's algorithm)
 class Solution
   def networkDelayTime(times: [[int]], n: int, k: int) -> int
@@ -532,6 +611,90 @@ class Solution:
             return sum((p + k - 1) // k for p in piles) <= h
 
         return 1 + bisect_left(range(1, max(piles) + 1), True, key=ok)
+```
+
+</details>
+
+```mu
+# 974. Subarray Sums Divisible by K (prefix sums)
+class Solution
+  def subarraysDivByK(nums: [int], k: int) -> int
+    count_pairs(scan(+, [0] + nums), by=p -> p % k)
+```
+
+<details><summary>pydsa</summary>
+
+```python
+# 974. Subarray Sums Divisible by K (prefix sums)
+from itertools import accumulate
+from pydsa import count_pairs
+
+class Solution:
+    def subarraysDivByK(self, nums: list[int], k: int) -> int:
+        return count_pairs(accumulate(nums, initial=0), by=lambda p: p % k)
+```
+
+</details>
+
+<details><summary>python</summary>
+
+```python
+# 974. Subarray Sums Divisible by K (prefix sums)
+from collections import Counter
+
+
+class Solution:
+    def subarraysDivByK(self, nums: list[int], k: int) -> int:
+        seen, total, count = Counter([0]), 0, 0
+        for x in nums:
+            total = (total + x) % k
+            count += seen[total]
+            seen[total] += 1
+        return count
+```
+
+</details>
+
+```mu
+# 1011. Capacity To Ship Packages Within D Days (binary search on the answer)
+class Solution
+  def shipWithinDays(weights: [int], days: int) -> int
+    first_true(max(weights), sum(weights), cap -> min_chunks(weights, cap) <= days)
+```
+
+<details><summary>pydsa</summary>
+
+```python
+# 1011. Capacity To Ship Packages Within D Days (binary search on the answer)
+from pydsa import first_true, min_chunks
+
+class Solution:
+    def shipWithinDays(self, weights: list[int], days: int) -> int:
+        def fits(cap):
+            return min_chunks(weights, cap) <= days
+
+        return first_true(max(weights), sum(weights), fits)
+```
+
+</details>
+
+<details><summary>python</summary>
+
+```python
+# 1011. Capacity To Ship Packages Within D Days (binary search on the answer)
+from bisect import bisect_left
+
+
+class Solution:
+    def shipWithinDays(self, weights: list[int], days: int) -> int:
+        def trips(cap):
+            n, load = 1, 0
+            for w in weights:
+                n, load = (n + 1, w) if load + w > cap else (n, load + w)
+            return n
+
+        lo, hi = max(weights), sum(weights)
+        return lo + bisect_left(range(lo, hi + 1), True, key=lambda c: trips(c) <= days)
 ```
 
 </details>
@@ -809,6 +972,59 @@ class Solution:
 </details>
 
 ```mu
+# 1254. Number of Closed Islands (connected components)
+class Solution
+  def closedIsland(grid: [[int]]) -> int
+    islands = components(cells(grid, eq=0), p -> nbrs(grid, p, eq=0))
+    count for c in islands if not any(is_edge(grid, i, j) for i, j in c)
+```
+
+<details><summary>pydsa</summary>
+
+```python
+# 1254. Number of Closed Islands (connected components)
+from pydsa import cells, components, is_edge, nbrs
+
+class Solution:
+    def closedIsland(self, grid: list[list[int]]) -> int:
+        islands = components(cells(grid, eq=0), lambda p: nbrs(grid, p, eq=0))
+        return sum(not any(is_edge(grid, i, j) for i, j in c) for c in islands)
+```
+
+</details>
+
+<details><summary>python</summary>
+
+```python
+# 1254. Number of Closed Islands (connected components)
+class Solution:
+    def closedIsland(self, grid: list[list[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+
+        def sink(i, j):
+            st = [(i, j)]
+            while st:
+                a, b = st.pop()
+                if 0 <= a < m and 0 <= b < n and grid[a][b] == 0:
+                    grid[a][b] = 1
+                    st += [(a + 1, b), (a - 1, b), (a, b + 1), (a, b - 1)]
+
+        for i in range(m):
+            for j in range(n):
+                if i in (0, m - 1) or j in (0, n - 1):
+                    sink(i, j)
+        count = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 0:
+                    sink(i, j)
+                    count += 1
+        return count
+```
+
+</details>
+
+```mu
 # 1334. Find the City With the Smallest Number of Neighbors at a Threshold Distance
 # (Dijkstra's algorithm)
 class Solution
@@ -859,6 +1075,57 @@ class Solution:
         return min(
             reversed(range(n)), key=lambda c: sum(d <= distanceThreshold for d in D[c])
         )
+```
+
+</details>
+
+```mu
+# 1971. Find if Path Exists in Graph (connected components)
+class Solution
+  def validPath(n: int, edges: [[int]], source: int, destination: int) -> bool
+    g = adjacency(edges, directed=False)
+    any({source, destination} <= set(c) for c in components(0..<n, u -> g[u]))
+```
+
+<details><summary>pydsa</summary>
+
+```python
+# 1971. Find if Path Exists in Graph (connected components)
+from pydsa import adjacency, components
+
+class Solution:
+    def validPath(
+        self, n: int, edges: list[list[int]], source: int, destination: int
+    ) -> bool:
+        g = adjacency(edges, directed=False)
+        groups = components(range(n), lambda u: g[u])
+        return any({source, destination} <= set(c) for c in groups)
+```
+
+</details>
+
+<details><summary>python</summary>
+
+```python
+# 1971. Find if Path Exists in Graph (connected components)
+from collections import defaultdict
+
+
+class Solution:
+    def validPath(
+        self, n: int, edges: list[list[int]], source: int, destination: int
+    ) -> bool:
+        g = defaultdict(list)
+        for u, v in edges:
+            g[u].append(v)
+            g[v].append(u)
+        seen, st = {source}, [source]
+        while st:
+            for v in g[st.pop()]:
+                if v not in seen:
+                    seen.add(v)
+                    st.append(v)
+        return destination in seen
 ```
 
 </details>
