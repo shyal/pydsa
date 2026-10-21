@@ -4,8 +4,12 @@ so GitHub shows them on a click. On the docs site the versions become tabs
 of the solve. The first block, the unfolded one, is the first tab: mu +
 pydsa on both sites."""
 
+import importlib
 import re
+import shutil
+import sys
 from functools import partial
+from pathlib import Path
 
 from markdown import Extension
 from markdown.preprocessors import Preprocessor
@@ -48,6 +52,28 @@ class TogglesExtension(Extension):
         md.preprocessors.register(Toggles(md, self.first), "toggles", 31.5)
 
 
+# mkdocstrings reads Python source; a module written in mu has none in the
+# repo. build/docs-src/pydsa is the package as Python: each .py copied, and
+# for each .mu the Python that pydsa imports for it (pydsa/_mu.py).
+SOURCE = Path(__file__).resolve().parent / "build" / "docs-src"
+
+
+def python_package():
+    sys.path.insert(0, str(SOURCE.parent.parent))
+    import pydsa
+
+    here = Path(pydsa.__file__).parent
+    out = SOURCE / "pydsa"
+    shutil.rmtree(out, ignore_errors=True)
+    out.mkdir(parents=True)
+    for py in here.glob("*.py"):
+        shutil.copy(py, out / py.name)
+    for mu in here.glob("*.mu"):
+        module = importlib.import_module(f"pydsa.{mu.stem}")
+        shutil.copy(module.__file__, out / f"{mu.stem}.py")
+
+
 def on_config(config):
+    python_package()
     config.markdown_extensions.append(TogglesExtension("mu + pydsa"))
     return config

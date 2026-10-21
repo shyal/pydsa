@@ -1,11 +1,14 @@
 """pydsa: data structures and algorithm helpers for LeetCode-style Python.
 
-Every public name of every module is importable from the package. The
-package imports only the standard library; the drawing functions import
-rich, colorama, PrettyPrintTree and graphviz when first called
-(`pip install pydsa[draw]`).
+Every public name of every module is importable from the package. Some
+modules are written in mu (pydsa/<name>.mu, with no .py): pydsa._mu
+imports them through mu, which writes their Python into __pycache__ (see
+pydsa/_mu.py). Past that, the package imports only the standard library;
+the drawing functions import rich, colorama, PrettyPrintTree and graphviz
+when first called (`pip install pydsa[draw]`).
 """
 
+from . import _mu  # noqa: F401  (imports the modules written in mu)
 from .adj import *  # noqa: F401,F403
 from .arith import *  # noqa: F401,F403
 from .bst import *  # noqa: F401,F403
@@ -22,4 +25,4 @@ from .search import *  # noqa: F401,F403
 from .seq import *  # noqa: F401,F403
 from .tree import *  # noqa: F401,F403
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
