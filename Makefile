@@ -15,5 +15,6 @@ venv:
 release:
 	$(PY) -m pytest -q tests
 	git push origin master
-	rm -rf dist && uv build && uv publish
+	rm -rf dist && uv build
+	. ./.envrc && uv publish  # .envrc holds UV_PUBLISH_TOKEN
 	@echo "pizza-lib $(VERSION) released"
