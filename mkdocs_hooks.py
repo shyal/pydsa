@@ -4,7 +4,6 @@ so GitHub shows them on a click. On the docs site the versions become tabs
 of the solve. The first block, the unfolded one, is the first tab: mu +
 pydsa on both sites."""
 
-import importlib
 import re
 import shutil
 import sys
@@ -56,12 +55,14 @@ class TogglesExtension(Extension):
 # mkdocstrings reads Python source; a module written in mu has none in the
 # repo. build/docs-src/pydsa is the package as Python: each .py copied, and
 # for each .mu the Python that pydsa imports for it (pydsa/_mu.py).
-SOURCE = Path(__file__).resolve().parent / "build" / "docs-src"
+ROOT = Path(__file__).resolve().parent
+SOURCE = ROOT / "build" / "docs-src"
 
 
 def python_package():
     sys.path.insert(0, str(SOURCE.parent.parent))
     import pydsa
+    from pydsa import _mu
 
     here = Path(pydsa.__file__).parent
     out = SOURCE / "pydsa"
@@ -69,9 +70,10 @@ def python_package():
     out.mkdir(parents=True)
     for py in here.glob("*.py"):
         shutil.copy(py, out / py.name)
+    # built, not imported: _treeformat imports PrettyPrint, which the docs
+    # build does not install
     for mu in here.glob("*.mu"):
-        module = importlib.import_module(f"pydsa.{mu.stem}")
-        shutil.copy(module.__file__, out / f"{mu.stem}.py")
+        shutil.copy(_mu.built(mu), out / f"{mu.stem}.py")
 
 
 # before mkdocstrings reads its paths, which must then exist: a first build

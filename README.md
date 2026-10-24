@@ -1150,9 +1150,9 @@ class Solution:
 | `linked` | `build_linked_list`, `get_list_values`, `print_linked_list`, `linked_list_reverse_k`, `draw_linked_list` |
 | `graphs` | `build_graph`, `get_adj_list`, `build_graph_from_edge_list`, `as_dict_of_dicts`, `is_edge_list`, `draw_graph`, `draw_graphviz`, `draw_ascii_graph` |
 
-Every public name is importable from the package itself. Some modules
-are written in [mu](https://www.shyal.com/mu/): `pydsa/<name>.mu`, with no
-`.py` in the repo. On import, mu writes the Python of such a module into
+Every public name is importable from the package itself. Every module
+is written in [mu](https://www.shyal.com/mu/): `pydsa/<name>.mu`, with no
+`.py` in the repo. On import, mu writes the Python of a module into
 `__pycache__`, once for each change to the `.mu`, so the package needs
 `mu-language` and, past that, only the standard library. The `draw_*` functions, `tabulate`-style
 output and `viz_binary_search` import rich, colorama, PrettyPrintTree and

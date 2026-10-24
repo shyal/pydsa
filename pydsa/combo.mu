@@ -5,7 +5,7 @@ from typing import Any, Callable, Iterable, Iterator
 
 Maker = Callable[[Iterable[int]], Any]
 
-def pairs(n: int, type: Maker = tuple, back: bool = false) -> Iterator[Any]
+def pairs(n: int, type: Maker=tuple, back: bool=false) -> Iterator[Any]
   """Every (i, j) with 0 <= i < j < n, in lexicographic order.
 
   With back, the pairs are grouped by the later index instead: for each
@@ -15,20 +15,20 @@ def pairs(n: int, type: Maker = tuple, back: bool = false) -> Iterator[Any]
   Each pair is built by type: tuple by default, list for a LeetCode answer.
   """
   if back
-    for j in range(n)
-      for i in range(j)
+    for j in 0..<n
+      for i in 0..<j
         yield type((i, j))
-    return
-  for i in range(n)
-    for j in range(i + 1, n)
-      yield type((i, j))
+  else
+    for i in 0..<n
+      for j in i + 1..<n
+        yield type((i, j))
 
-def triples(n: int, type: Maker = tuple) -> Iterator[Any]
+def triples(n: int, type: Maker=tuple) -> Iterator[Any]
   """Every (i, j, k) with 0 <= i < j < k < n, in lexicographic order.
 
   Each triple is built by type: tuple by default, list for a LeetCode answer.
   """
-  for i in range(n)
-    for j in range(i + 1, n)
-      for k in range(j + 1, n)
+  for i in 0..<n
+    for j in i + 1..<n
+      for k in j + 1..<n
         yield type((i, j, k))

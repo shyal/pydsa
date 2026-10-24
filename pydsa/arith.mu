@@ -1,11 +1,9 @@
 """Integer arithmetic helpers."""
 
-from itertools import zip_longest
 from math import factorial as _factorial
-from typing import Any, List, Sequence
+from typing import Sequence
 
 def ceil_div(a: int, b: int) -> int
-  """a / b rounded up, for a >= 0 and b > 0."""
   if b <= 0
     raise ValueError("Denominator b must be positive.")
   if a < 0
@@ -18,7 +16,6 @@ def factorial(n: int) -> int
     raise ValueError("n must be non-negative.")
   _factorial(n)
 
-def batched(s: Sequence[Any], n: int = 1) -> List[Any]
+def batched(s: Sequence, n: int=1) -> list
   """s cut into pieces of n; the last piece holds what is left."""
-  r = list(range(0, len(s), n))
-  [s[a:b] for a, b in zip_longest(r, r[1:])]
+  [s[i:i + n] for i in range(0, len(s), n)]

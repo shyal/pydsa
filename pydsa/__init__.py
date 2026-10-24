@@ -1,6 +1,6 @@
 """pydsa: data structures and algorithm helpers for LeetCode-style Python.
 
-Every public name of every module is importable from the package. Some
+Every public name of every module is importable from the package. The
 modules are written in mu (pydsa/<name>.mu, with no .py): pydsa._mu
 imports them through mu, which writes their Python into __pycache__ (see
 pydsa/_mu.py). Past that, the package imports only the standard library;

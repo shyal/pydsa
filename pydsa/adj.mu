@@ -1,18 +1,20 @@
 from collections import defaultdict
 from heapq import heappop, heappush
-from math import inf
-from typing import Any, Deque, Iterator, List, Optional, Set, Tuple
+from typing import Any, Deque, Iterator
 
 from .grid import _holds, table
 
-def adjacency(edges: List[Any], n: Optional[int] = none, reverse: bool = false, directed: bool = true, weighted: bool = false) -> Any
+def adjacency(
+  edges: list, n: int?=none, reverse: bool=false, directed: bool=true,
+  weighted: bool=false
+)
   """Adjacency from an edge list. Each edge is [a, b] or, with weighted,
   [a, b, w]. Unweighted returns a dict of lists in edge order; weighted a
   dict of dicts, `adj[a][b] = w`. With n, nodes 0 to n - 1 are all keys,
   isolated ones with an empty list. reverse reads each edge as b to a.
   directed=False adds both directions."""
-  adj: Any = defaultdict(dict) if weighted else defaultdict(list)
-  for c in range(n or 0)
+  ret adj = weighted ? {:dict} : {:list}
+  for c in 0..<(n or 0)
     adj[c]
   for e in edges
     a, b = e[:2]
@@ -23,26 +25,21 @@ def adjacency(edges: List[Any], n: Optional[int] = none, reverse: bool = false, 
       if not directed
         adj[b][a] = e[2]
     else
-      adj[a].append(b)
+      adj[a] <- b
       if not directed
-        adj[b].append(a)
-  return adj
+        adj[b] <- a
 
-def indegrees(edges: List[Any], n: Optional[int] = none, reverse: bool = false, directed: bool = true, type: Any = defaultdict) -> Any
+def indegrees(
+  edges: list, n: int?=none, reverse: bool=false, directed: bool=true, type=defaultdict
+)
   """In-degree of every node from an edge list, each edge [a, b] counting
   one into b. Default is a defaultdict(int), any node reading 0; with n,
   nodes 0 to n - 1 are all keys. type=list needs n and returns a plain
   list. reverse reads each edge as b to a. directed=False counts the edge
   into a as well, so the result is the plain degree of every node."""
-  indeg: Any
-  if type is list
-    if n is none
-      raise ValueError("type=list needs n")
-    indeg = table(n)
-  else
-    indeg = defaultdict(int)
-    for c in range(n or 0)
-      indeg[c]
+  if type is list and n is none
+    raise ValueError("type=list needs n")
+  ret indeg = type is list ? table(n) : defaultdict(int, dict.fromkeys(0..<(n or 0), 0))
   for e in edges
     a, b = e[:2]
     if reverse
@@ -50,9 +47,11 @@ def indegrees(edges: List[Any], n: Optional[int] = none, reverse: bool = false, 
     indeg[b] += 1
     if not directed
       indeg[a] += 1
-  return indeg
 
-def levels(q: Deque[Any], grid: Optional[Any] = none, seen: Optional[Set[Any]] = none, grouped: bool = false, eq: Any = none, lt: Any = none, lte: Any = none, gt: Any = none, gte: Any = none) -> Iterator[Tuple[int, Any]]
+def levels(
+  q: Deque, grid=none, seen: set?=none, grouped: bool=false,
+  eq=none, lt=none, lte=none, gt=none, gte=none
+) -> Iterator[(int, Any)]
   """Level-order BFS over a deque the caller keeps pushing onto.
 
   Yields (d, item) for every item popped, where d is the level the item
@@ -66,21 +65,19 @@ def levels(q: Deque[Any], grid: Optional[Any] = none, seen: Optional[Set[Any]] =
   seen, an item already in seen is dropped and a kept item is added to it,
   so the caller can push without checking.
   """
-
-  def keep(x: Any) -> bool
-    v = x if grid is none else grid[x[0]][x[1]]
+  def keep(x) -> bool
+    v = grid is none ? x : grid[x[0]][x[1]]
     if not _holds(v, eq, lt, lte, gt, gte) or (seen is not none and x in seen)
       return false
     if seen is not none
       seen.add(x)
-    return true
+    true
 
   d = 0
   while q
-    popped = (q.popleft() for _ in range(len(q)))
+    popped = (q.popleft() for _ in 0..<len q)
     if grouped
-      level = [x for x in popped if keep(x)]
-      if level
+      if level := [x for x in popped if keep(x)]
         yield d, level
     else
       for x in popped
@@ -91,18 +88,17 @@ def levels(q: Deque[Any], grid: Optional[Any] = none, seen: Optional[Set[Any]] =
 def components(vertices, edges)
   """The connected components of a graph given as its vertices and a
   function edges(u) listing u's neighbours, each as a list of vertices."""
-  left, out = set(vertices), []
+  ret out, left = [], set(vertices)
   while left
     stack, comp = [left.pop()], []
     while stack
-      u = stack.pop()
-      comp.append(u)
+      u = stack .
+      comp <- u
       for v in edges(u)
         if v in left
           left.remove(v)
-          stack.append(v)
-    out.append(comp)
-  return out
+          stack <- v
+    out <- comp
 
 class Graph
   """Vertices and weighted adjacency lists, adj[u] = [(v, w), ...]. An
@@ -112,18 +108,16 @@ class Graph
     self.vertices = list(vertices)
     self.adj = {u: [] for u in self.vertices}
     for e in edges
-      u, v, w = e if len(e) == 3 else (*e, 1)
-      self.adj[u].append((v, w))
+      u, v, w = len(e) == 3 ? e : (*e, 1)
+      self.adj[u] <- (v, w)
       if not directed
-        self.adj[v].append((u, w))
+        self.adj[v] <- (u, w)
 
-def graph(vertices, edges, directed=false)
-  """A Graph of these vertices and edges."""
-  return Graph(vertices, edges, directed)
+def graph(vertices, edges, directed=false): Graph(vertices, edges, directed)
 
 def dijkstra(g, src)
   """Shortest distance from src to every vertex of g, inf when unreachable."""
-  dist = {u: inf for u in g.vertices}
+  ret dist = {u: inf for u in g.vertices}
   dist[src] = 0
   pq = [(0, src)]
   while pq
@@ -134,4 +128,3 @@ def dijkstra(g, src)
       if d + w < dist[v]
         dist[v] = d + w
         heappush(pq, (d + w, v))
-  return dist
