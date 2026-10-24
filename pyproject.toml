@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -10,12 +10,11 @@ version = "0.3.1"
 description = "Data structure and algorithm helpers for LeetCode-style Python: grids, adjacency, binary search bounds, heaps, trees, linked lists."
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
 authors = [{ name = "Shyal" }]
 keywords = ["leetcode", "algorithms", "data-structures", "grid", "graph", "heap", "binary-search"]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Topic :: Software Development :: Libraries",
     "Topic :: Education",
 ]
