@@ -34,12 +34,21 @@ def test_max_diff_reverse_is_the_best_fall_so_far():
     assert max_diff([12, 6, 1, 2, 7], reverse=True) == [6, 11, 11, 11]
 
 
+def test_max_diff_from_right_is_the_best_rise_from_the_right_end():
+    assert max_diff([12, 6, 1, 2, 7], from_right=True) == [6, 6, 6, 5]
+
+
+def test_max_diff_from_right_reverse_is_the_best_fall_from_the_right_end():
+    assert max_diff([12, 6, 1, 2, 7], reverse=True, from_right=True) == [11, 5, -1, -5]
+
+
 def test_max_diff_by_compares_a_key():
     assert max_diff(["ccc", "a", "bb"], by=len) == [-2, 1]
 
 
 def test_max_diff_of_fewer_than_two_items_is_empty():
     assert max_diff([5]) == [] and max_diff([]) == []
+    assert max_diff([5], from_right=True) == [] and max_diff([], from_right=True) == []
 
 
 def test_max_diff_solves_121_and_2874():
