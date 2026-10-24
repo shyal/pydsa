@@ -1,0 +1,10 @@
+{% extends "_base/class.html.jinja" %}
+{% from "_mu.html.jinja" import source %}
+
+{% block source scoped %}
+  {% if config.show_source and class.extra.mu.source %}
+    {{ source(class, html_id, lang) }}
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock source %}

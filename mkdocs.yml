@@ -30,10 +30,12 @@ nav:
 plugins:
   - search
   - mkdocstrings:
+      custom_templates: templates  # a def's source block: a mu tab, a python tab
       handlers:
         python:
           paths: ["build/docs-src"]  # written by mkdocs_hooks.py
           options:
+            extensions: ["mkdocs_hooks.py:MuSource"]  # finds the mu of each def
             show_root_heading: false
             show_root_toc_entry: false
             show_source: true

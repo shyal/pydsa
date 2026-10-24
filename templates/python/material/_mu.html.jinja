@@ -1,0 +1,19 @@
+{#- The source block of a def or class from a module written in mu: a tab
+with its mu, then a tab with the Python that mu writes for it, as the front
+page shows a solve. MuSource in mkdocs_hooks.py finds the mu. -#}
+{% macro source(obj, html_id, lang) %}
+  {% set tab = html_id ~ "--source" %}
+  <details class="mkdocstrings-source">
+    <summary>{{ lang.t("Source code in") }} <code>{{ obj.extra.mu.path }}</code></summary>
+    <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="{{ tab }}-mu" name="{{ tab }}" type="radio" /><input id="{{ tab }}-python" name="{{ tab }}" type="radio" /><div class="tabbed-labels"><label for="{{ tab }}-mu">mu</label><label for="{{ tab }}-python">python</label></div>
+      <div class="tabbed-content">
+        <div class="tabbed-block">
+          {{ obj.extra.mu.source|highlight(language="mu", linestart=obj.extra.mu.lineno, linenums=True, id_prefix=html_id ~ "--mu--") }}
+        </div>
+        <div class="tabbed-block">
+          {{ obj.source|highlight(language="python", linestart=obj.lineno or 0, linenums=True, id_prefix=html_id ~ "--source--") }}
+        </div>
+      </div>
+    </div>
+  </details>
+{% endmacro %}

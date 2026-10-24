@@ -10,6 +10,7 @@ import sys
 from functools import partial
 from pathlib import Path
 
+import griffe
 from markdown import Extension
 from mkdocs.plugins import event_priority
 from markdown.preprocessors import Preprocessor
@@ -74,6 +75,45 @@ def python_package():
     # build does not install
     for mu in here.glob("*.mu"):
         shutil.copy(_mu.built(mu), out / f"{mu.stem}.py")
+
+
+class MuSource(griffe.Extension):
+    """The mu of each def and class read from build/docs-src, for the mu tab
+    of its source block (templates/python/material/_mu.html.jinja): mu maps
+    each line of the Python it writes to the .mu line it comes from."""
+
+    def __init__(self):
+        self.read = {}
+
+    def mu_of(self, py):
+        """(the .mu's lines, the mu line of each Python line) for a file of
+        build/docs-src/pydsa written from a .mu, else None."""
+        if py not in self.read:
+            from mulang import transpile
+
+            mu = ROOT / "pydsa" / f"{py.stem}.mu"
+            self.read[py] = None
+            if py.parent == SOURCE / "pydsa" and mu.is_file():
+                code, origin = transpile(mu.read_text(), mapped=True, path=mu, library=False)
+                if code == py.read_text():
+                    self.read[py] = (mu.read_text().split("\n"), origin)
+        return self.read[py]
+
+    def on_object(self, *, obj, **kwargs):
+        if obj.kind not in (griffe.Kind.FUNCTION, griffe.Kind.CLASS) or not obj.endlineno:
+            return
+        py = Path(obj.filepath).resolve()
+        if not (got := self.mu_of(py)):
+            return
+        lines, origin = got
+        at = [origin[k - 1] for k in range(obj.lineno, obj.endlineno + 1) if origin[k - 1]]
+        if at:
+            first, last = min(at), max(at)
+            obj.extra["mu"].update(
+                source="\n".join(lines[first - 1 : last]),
+                lineno=first,
+                path=f"pydsa/{py.stem}.mu",
+            )
 
 
 # before mkdocstrings reads its paths, which must then exist: a first build
