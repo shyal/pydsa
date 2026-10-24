@@ -57,7 +57,7 @@ def test_bst_and_given_values():
 
 
 def test_node_parent_links_into_children():
-    from Types import Node
+    from pydsa.nodes import Node
 
     root = Node("main")
     a = Node({"fid": 0}, parent=root)
@@ -68,7 +68,7 @@ def test_node_parent_links_into_children():
 
 
 def test_general_tree_nested_form_round_trips():
-    from tree_utils import build_general_tree, get_general_tree
+    from pydsa.tree import build_general_tree, get_general_tree
 
     nested = [
         {},

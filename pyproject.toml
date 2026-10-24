@@ -29,7 +29,7 @@ Documentation = "https://www.shyal.com/pydsa/"
 [project.optional-dependencies]
 # pymdown-extensions 12 breaks mkdocstrings 1.0 (Highlight.__init__ needs md)
 docs = ["mkdocs-material>=9.5", "mkdocstrings[python]>=0.27", "pymdown-extensions<12", "ruff", "mu-language>=0.12.3"]
-draw = ["rich", "colorama", "PrettyPrintTree", "graphviz"]
+draw = ["rich", "colorama", "PrettyPrintTree", "graphviz", "tabulate", "networkx", "phart"]
 test = ["pytest"]
 
 [tool.setuptools.packages.find]

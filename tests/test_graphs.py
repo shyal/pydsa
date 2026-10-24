@@ -97,7 +97,7 @@ def test_longer_tuples_keep_the_rest_as_label():
 
 
 def test_draw_graph_colours_named_edges(capsys):
-    from graph_utils import draw_graph
+    from pydsa.graphs import draw_graph
 
     draw_graph({0: [(1, "red"), (1, "blue")], 1: [(2, 7)]})
     out = capsys.readouterr().out
