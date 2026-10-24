@@ -12,6 +12,7 @@ from functools import partial
 from pathlib import Path
 
 from markdown import Extension
+from mkdocs.plugins import event_priority
 from markdown.preprocessors import Preprocessor
 
 FENCE = r"```\w*\n(?:(?!```).*\n)*```"
@@ -73,6 +74,9 @@ def python_package():
         shutil.copy(module.__file__, out / f"{mu.stem}.py")
 
 
+# before mkdocstrings reads its paths, which must then exist: a first build
+# from a clean checkout (CI) found no build/docs-src
+@event_priority(100)
 def on_config(config):
     python_package()
     config.markdown_extensions.append(TogglesExtension("mu + pydsa"))
