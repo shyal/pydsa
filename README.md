@@ -1155,15 +1155,15 @@ is written in [mu](https://www.shyal.com/mu/): `pydsa/<name>.mu`, with no
 `.py` in the repo. On import, mu writes the Python of a module into
 `__pycache__`, once for each change to the `.mu`, so the package needs
 `mu-language` and, past that, only the standard library. The `draw_*` functions, `tabulate`-style
-output and `viz_binary_search` import rich, colorama, PrettyPrintTree and
-graphviz when first called:
+output and `viz_binary_search` import rich, colorama, PrettyPrintTree,
+graphviz, tabulate, networkx and phart when first called:
 
 ```
 pip install 'pizza-lib[draw]'
 ```
 
-Every function has a docstring with its contract; the tests in `tests/`
-are the examples.
+A function has a docstring only when its name and signature do not give
+its contract; the tests in `tests/` are the examples.
 
 ## Where it comes from
 
@@ -1174,6 +1174,6 @@ pastes into the Python it emits. Both still use them from here.
 ## Tests
 
 ```
-pip install -e '.[test]'
+pip install -e '.[test,draw]'
 pytest
 ```

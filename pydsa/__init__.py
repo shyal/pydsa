@@ -4,8 +4,9 @@ Every public name of every module is importable from the package. The
 modules are written in mu (pydsa/<name>.mu, with no .py): pydsa._mu
 imports them through mu, which writes their Python into __pycache__ (see
 pydsa/_mu.py). Past that, the package imports only the standard library;
-the drawing functions import rich, colorama, PrettyPrintTree and graphviz
-when first called (`pip install pydsa[draw]`).
+the drawing functions import rich, colorama, PrettyPrintTree, graphviz,
+tabulate, networkx and phart when first called
+(`pip install 'pizza-lib[draw]'`).
 """
 
 from . import _mu  # noqa: F401  (imports the modules written in mu)
