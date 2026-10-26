@@ -26,4 +26,4 @@ from .search import *  # noqa: F401,F403
 from .seq import *  # noqa: F401,F403
 from .tree import *  # noqa: F401,F403
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"

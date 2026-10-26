@@ -23,26 +23,26 @@ class Multiset extends Counter
       del self[key]
 
 def count_pairs(
-  xs: Iterable[Any], by: Optional[Any -> Any]=none, want: Optional[Any -> Any]=none
+  xs: Iterable[Any], key: Optional[Any -> Any]=none, lookup: Optional[Any -> Any]=none
 ) -> int
-  """Count the index pairs i < j with by(xs[i]) == want(xs[j]), in one pass.
+  """Count the index pairs i < j with key(xs[i]) == lookup(xs[j]), in one pass.
 
-  by(x) is the key x is stored under and want(x) is the key x looks up.
-  With by left out the key is x itself; with want left out it is by, so
+  key(x) is the key x is stored under and lookup(x) is the key x looks up.
+  With key left out the key is x itself; with lookup left out it is key, so
   plain count_pairs(xs) counts the pairs of equal values.
 
   >>> count_pairs([1, 2, 3, 1, 1, 3])
   4
-  >>> count_pairs([1, 6, 3, 11, 8], by=lambda x: x % 5)
+  >>> count_pairs([1, 6, 3, 11, 8], key=lambda x: x % 5)
   4
-  >>> count_pairs([3, 1, 4, 6, 3], want=lambda x: x - 2)
+  >>> count_pairs([3, 1, 4, 6, 3], lookup=lambda x: x - 2)
   2
   """
-  if by is none
-    by = x -> x
-  if want is none
-    want = by
+  if key is none
+    key = x -> x
+  if lookup is none
+    lookup = key
   ret res, cnt = 0, Counter()
   for x in xs
-    res += cnt[want(x)]
-    cnt[by(x)] += 1
+    res += cnt[lookup(x)]
+    cnt[key(x)] += 1
