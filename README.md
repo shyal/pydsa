@@ -1139,7 +1139,7 @@ class Solution:
 | `search` | `first_true`, `last_true`, `first_false`, `last_false`, `min_chunks`, `viz_binary_search` |
 | `heaps` | `maxheappush`, `maxheappop`, `maxheapify`, `maxheappushpop`, `maxheapreplace`, `maxheappeek`, `maxheapitems`, `heap`, `draw_heap` |
 | `counting` | `Multiset`, `count_pairs` |
-| `combo` | `pairs`, `triples` |
+| `combo` | `pairs`, `triples`, `substrings` |
 | `digits` | `to_digits`, `to_int`, `num_digits`, `even`, `odd` |
 | `arith` | `ceil_div`, `factorial`, `batched` |
 | `seq` | `lcs`, `max_diff` |
