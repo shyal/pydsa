@@ -20,14 +20,14 @@ def lcs(a: Sequence[Any], b: Sequence[Any], full: bool=false, type=int)
   full ? dp : dp[-1][-1]
 
 def max_diff(
-  xs: Iterable[Any], by: Optional[Any -> Any]=none, reverse: bool=false,
+  xs: Iterable[Any], key: Optional[Any -> Any]=none, reverse: bool=false,
   from_right: bool=false
 ) -> [Any]
-  """The largest by(xs[j]) - by(xs[i]) with i < j, so far, for each j
+  """The largest key(xs[j]) - key(xs[i]) with i < j, so far, for each j
   from 1: one value per index after the first.
 
-  by(x) is the value compared; with by left out it is x itself. reverse
-  flips the difference to by(xs[i]) - by(xs[j]): the largest fall, not
+  key(x) is the value compared; with key left out it is x itself. reverse
+  flips the difference to key(xs[i]) - key(xs[j]): the largest fall, not
   the largest rise.
 
   from_right scans from the right end: the value at i is the best
@@ -46,7 +46,7 @@ def max_diff(
   0
   """
   if from_right
-    return max_diff(list(xs)[::-1], by, not reverse)[::-1]
-  ys = [by is none ? x : by(x) for x in xs]
+    return max_diff(list(xs)[::-1], key, not reverse)[::-1]
+  ys = [key is none ? x : key(x) for x in xs]
   ys = reverse ? [-y for y in ys] : ys
   scan(max, (y - lo for y, lo in zip(ys[1:], scan(min, ys))), type=list)

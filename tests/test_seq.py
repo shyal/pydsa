@@ -43,7 +43,7 @@ def test_max_diff_from_right_reverse_is_the_best_fall_from_the_right_end():
 
 
 def test_max_diff_by_compares_a_key():
-    assert max_diff(["ccc", "a", "bb"], by=len) == [-2, 1]
+    assert max_diff(["ccc", "a", "bb"], key=len) == [-2, 1]
 
 
 def test_max_diff_of_fewer_than_two_items_is_empty():

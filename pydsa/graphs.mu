@@ -53,11 +53,13 @@ def draw_graph(G: {Any: dict | Any}) -> none
   print(tabulate(table, headers=headers, tablefmt="grid", showindex=headers,
     numalign="center", stralign="center"))
 
-def build_graph_from_edge_list(edges, type="undirected")
+def build_graph_from_edge_list(edges, directed: bool=false)
+  """A dict of dicts from an edge list, every edge weighted 0. directed
+  adds each edge one way only, as adjacency does."""
   ret G = {:dict}
   for u, v in edges
     G[u][v] = 0
-    if type == "undirected"
+    if not directed
       G[v][u] = 0
 
 def as_dict_of_dicts(G)
@@ -125,12 +127,12 @@ def _items(nbrs)
     raise ValueError("Invalid graph format")
 
 def draw_graphviz(
-  G: {Any: dict | list}, png_filename: str?=none, n=none, type="undirected",
+  G: {Any: dict | list}, png_filename: str?=none, n=none, directed: bool=false,
   show_weights: bool=false
 ) -> none
   if os.environ.get("RUNNING_TESTS") == "True"
     return
-  G = as_dict_of_dicts(is_edge_list(G) ? build_graph_from_edge_list(G, type) : G)
+  G = as_dict_of_dicts(is_edge_list(G) ? build_graph_from_edge_list(G, directed) : G)
   if png_filename is none
     # Compute deterministic hash for caching; shorten hash for filename
     sorted_G = {
@@ -153,7 +155,7 @@ def draw_graphviz(
   all_nodes.update(dst for _, dst, _ in edges)
   if n is not none
     all_nodes.update(range(n))
-  dot = (type == "directed" ? Digraph : Graph)(comment="The Graph")
+  dot = (directed ? Digraph : Graph)(comment="The Graph")
   dot.attr(rankdir="TB")
   dot.attr(bgcolor="transparent")
   dot.node_attr.update(style="filled", fillcolor="transparent", color="white",
@@ -228,7 +230,7 @@ def draw_ascii_graph(graph: {Any: dict | list}) -> none
   # one row and routes edges through the others, which is unreadable
   # past a handful of edges.
   if _image_terminal()
-    draw_graphviz(graph, type=_symmetric(G) ? "undirected" : "directed")
+    draw_graphviz(graph, directed=not _symmetric(G))
     return
   # imported here: networkx costs ~50ms and every interpreter start pays
   # for sitecustomize's imports

@@ -5,6 +5,7 @@ from pydsa.grid import (
     col,
     edges,
     in_bounds,
+    grid_bfs,
     is_edge,
     like,
     nbrs,
@@ -34,7 +35,7 @@ def test_cells_eq_keeps_only_matching_cells():
 
 
 def test_cells_val_is_the_old_name_for_eq():
-    assert list(cells([[0, 1, 0], [1, 1, 0]], val=0)) == [(0, 0), (0, 2), (1, 2)]
+    assert list(cells([[0, 1, 0], [1, 1, 0]], eq=0)) == [(0, 0), (0, 2), (1, 2)]
 
 
 def test_cells_eq_combines_with_start():
@@ -140,6 +141,8 @@ def test_is_edge_on_each_side_and_not_inside():
     assert is_edge(g, 1, 3)
     assert not is_edge(g, 1, 1)
     assert not is_edge(g, 1, 2)
+    assert is_edge(g, (0, 2))
+    assert not is_edge(g, (1, 2))
 
 
 def test_edges_lists_the_border_once_in_row_major_order():
@@ -155,6 +158,12 @@ def test_edges_lists_the_border_once_in_row_major_order():
         (2, 2),
         (2, 3),
     ]
+
+
+def test_edges_filters_on_the_cell_value_like_cells():
+    g = [[1, 0, 1], [0, 1, 0], [1, 0, 1]]
+    assert list(edges(g, eq=0)) == [(0, 1), (1, 0), (1, 2), (2, 1)]
+    assert list(edges(g, gt=0)) == [(0, 0), (0, 2), (2, 0), (2, 2)]
 
 
 def test_edges_of_a_single_row_or_column_is_every_cell():
@@ -181,3 +190,12 @@ def test_shape_of_several_sequences_is_one_size_each():
 def test_shape_last_index_is_every_size_less_one():
     assert shape([[3, 1, 2], [3, 0, 2], [3, 3, 3]], last_index=True) == (2, 2)
     assert shape("abcde", "ace", last_index=True) == (4, 2)
+
+
+def test_grid_bfs_takes_one_source_or_several_and_the_cells_filter():
+    g = [[0, 1, 0], [0, 1, 0], [0, 0, 0]]
+    one = grid_bfs(g, (0, 0), eq=0)
+    assert one == [[0, -1, 6], [1, -1, 5], [2, 3, 4]]
+    assert grid_bfs(g, [(0, 0)], eq=0) == one
+    assert grid_bfs(g, [(0, 0), (0, 2)], eq=0) == [[0, -1, 0], [1, -1, 1], [2, 3, 2]]
+    assert grid_bfs(g, (0, 0))[0][1] == 1

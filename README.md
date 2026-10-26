@@ -1146,7 +1146,7 @@ class Solution:
 | `generators` | `as_list` |
 | `nodes` | `TreeNode`, `ListNode`, `GraphNode`, `Node` |
 | `tree` | `build_tree`, `get_level_order`, `find_node`, `get_inorder`, `is_balanced`, `build_nary_tree`, `build_general_tree`, `get_general_tree`, `generate_random_tree`, `generate_full_binary_tree`, `draw_tree`, `draw_general_tree` |
-| `bst` | `insert`, `generate_random_bst`, `tree_to_list`, `is_valid_bst`, `generate_and_print_random_bst` |
+| `bst` | `insert`, `generate_random_bst`, `is_valid_bst`, `generate_and_print_random_bst` |
 | `linked` | `build_linked_list`, `get_list_values`, `print_linked_list`, `linked_list_reverse_k`, `draw_linked_list` |
 | `graphs` | `build_graph`, `get_adj_list`, `build_graph_from_edge_list`, `as_dict_of_dicts`, `is_edge_list`, `draw_graph`, `draw_graphviz`, `draw_ascii_graph` |
 
