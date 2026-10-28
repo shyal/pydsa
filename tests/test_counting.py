@@ -38,3 +38,22 @@ def test_zero_assignment_on_missing_key_is_a_no_op():
     m = Multiset()
     m["q"] = 0
     assert m == {}
+
+
+from pydsa.counting import count_subarrays
+
+
+def test_count_subarrays_sums_the_blocks():
+    assert count_subarrays([1, 3, 2, 5, 4], lambda v: v % 2 == 1) == 4
+    assert count_subarrays([1, 1], lambda v: 1 <= v <= 1) == 3
+    assert count_subarrays([0, 0, 0], lambda v: v == 0) == 6
+    assert count_subarrays([1, 2, 3], lambda v: v == 0) == 0
+    assert count_subarrays([], lambda v: True) == 0
+
+
+def test_count_subarrays_on_pairs_starts_each_block_at_one():
+    assert count_subarrays([3, 2, 1, 4], lambda a, b: b == a - 1, pairs=True) == 7
+    assert count_subarrays("aaab", lambda a, b: a == b, pairs=True) == 7
+    assert count_subarrays([1, 2, 1, 2], lambda a, b: a != b, pairs=True) == 10
+    assert count_subarrays([5], lambda a, b: False, pairs=True) == 1
+    assert count_subarrays([], lambda a, b: True, pairs=True) == 0

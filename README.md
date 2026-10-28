@@ -355,6 +355,41 @@ class Solution:
 </details>
 
 ```mu
+# 2348. Number of Zero-Filled Subarrays (block counting)
+class Solution
+  def zeroFilledSubarray(nums: [int]) -> int
+    count_subarrays(nums, v -> v == 0)
+```
+
+<details><summary>pydsa</summary>
+
+```python
+# 2348. Number of Zero-Filled Subarrays (block counting)
+from pydsa import count_subarrays
+
+class Solution:
+    def zeroFilledSubarray(self, nums: list[int]) -> int:
+        return count_subarrays(nums, lambda v: v == 0)
+```
+
+</details>
+
+<details><summary>python</summary>
+
+```python
+# 2348. Number of Zero-Filled Subarrays (block counting)
+class Solution:
+    def zeroFilledSubarray(self, nums: list[int]) -> int:
+        res = n = 0
+        for v in nums:
+            n = n + 1 if v == 0 else 0
+            res += n
+        return res
+```
+
+</details>
+
+```mu
 # 560. Subarray Sum Equals K (prefix sums)
 class Solution
   def subarraySum(nums: [int], k: int) -> int

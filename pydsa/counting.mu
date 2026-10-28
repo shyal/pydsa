@@ -46,3 +46,25 @@ def count_pairs(
   for x in xs
     res += cnt[lookup(x)]
     cnt[key(x)] += 1
+
+def count_subarrays(xs: Iterable[Any], key: Any -> bool, pairs: bool=false) -> int
+  """Count the subarrays of xs in which every element passes key, or, with
+  pairs, every adjacent pair (a, b) passes key(a, b).
+
+  A maximal block that passes holds n * (n + 1) // 2 subarrays for its
+  length n; the running count adds the current block length at each step.
+  With pairs, a single element has no pair, so a block starts at length 1.
+
+  >>> count_subarrays([1, 3, 2, 5, 4], lambda v: v % 2 == 1)
+  4
+  >>> count_subarrays([3, 2, 1, 4], lambda a, b: b == a - 1, pairs=True)
+  7
+  """
+  ret res = 0
+  n = 0
+  prev = none
+  for >i, x in xs
+    passes = (i == 0 or key(prev, x)) if pairs else key(x)
+    n = n + 1 if passes else (1 if pairs else 0)
+    res += n
+    prev = x
