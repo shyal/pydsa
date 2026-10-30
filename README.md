@@ -1176,7 +1176,7 @@ class Solution:
 | `counting` | `Multiset`, `count_pairs` |
 | `combo` | `pairs`, `triples`, `substrings` |
 | `digits` | `to_digits`, `to_int`, `num_digits`, `even`, `odd` |
-| `arith` | `ceil_div`, `factorial`, `batched` |
+| `arith` | `ceil_div`, `factorial`, `batched`, `primes` |
 | `seq` | `lcs`, `max_diff` |
 | `generators` | `as_list` |
 | `nodes` | `TreeNode`, `ListNode`, `GraphNode`, `Node` |

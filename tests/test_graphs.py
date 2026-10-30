@@ -104,3 +104,32 @@ def test_draw_graph_colours_named_edges(capsys):
     assert "\x1b[31mred" in out
     assert "\x1b[34mblue" in out
     assert "7" in out
+
+
+def test_node_colour_reads_leetcode_letters():
+    from pydsa.graphs import _node_colour
+
+    assert _node_colour("R") == "red"
+    assert _node_colour("w") == "white"
+    assert _node_colour("Blue") == "blue"
+    assert _node_colour("orange") == "orange"
+
+
+def test_per_node_indexes_dict_list_and_string():
+    from pydsa.graphs import _per_node
+
+    assert _per_node("BRW", 1) == "R"
+    assert _per_node("BRW", 3) is None
+    assert _per_node([5, 6], 0) == 5
+    assert _per_node({"a": 1}, "a") == 1
+    assert _per_node({"a": 1}, "b") is None
+    assert _per_node(None, 0) is None
+
+
+def test_node_attrs_fill_label_and_dark_text_on_light_fill():
+    from pydsa.graphs import _node_attrs
+
+    assert _node_attrs(None, None) == {}
+    assert _node_attrs("R", None) == {"fillcolor": "red"}
+    assert _node_attrs("W", None) == {"fillcolor": "white", "fontcolor": "black"}
+    assert _node_attrs(None, 7) == {"label": "\\N\\n7"}

@@ -126,10 +126,37 @@ def _items(nbrs)
   else
     raise ValueError("Invalid graph format")
 
+# the one-letter colour codes LeetCode uses in a colours string
+_LETTER_COLOURS = {"R": "red", "G": "green", "B": "blue", "Y": "yellow",
+  "W": "white", "M": "magenta", "C": "cyan", "K": "black"}
+# fills too light for white text
+_LIGHT = ("white", "yellow", "cyan", "green")
+
+def _per_node(spec, node)
+  """spec[node] for a dict, list or string of per-node values; none when
+  the node has no entry."""
+  if spec is none
+    return none
+  if isinstance(spec, dict)
+    return spec.get(node)
+  isinstance(node, int) and 0 <= node < len(spec) ? spec[node] : none
+
+def _node_colour(val) -> str
+  """A graphviz colour name from a colour word or a LeetCode letter."""
+  val = str(val)
+  val.lower() in _COLOURS ? val.lower() : _LETTER_COLOURS.get(val.upper(), val)
+
 def draw_graphviz(
   G: {Any: dict | list}, png_filename: str?=none, n=none, directed: bool=false,
-  show_weights: bool=false
+  show_weights: bool=false, colours: {Any: str} | [str] | str?=none,
+  labels: {Any: Any} | [Any] | str?=none
 ) -> none
+  """Draw G as a picture in the terminal.
+
+  `colours` fills node i with colours[i]: a colour name, or one of the
+  letters RGBYWMCK as a LeetCode colours string spells them.
+  `labels` writes labels[i] under the name of node i.
+  Both take a dict, a list or a string, indexed by node."""
   if os.environ.get("RUNNING_TESTS") == "True"
     return
   G = as_dict_of_dicts(is_edge_list(G) ? build_graph_from_edge_list(G, directed) : G)
@@ -139,7 +166,8 @@ def draw_graphviz(
       str(k): sort([(str(dst), weight) for dst, weight in _items(v)], by=x -> x[0])
       for k, v in sort(G.items(), by=x -> str(x[0]))
     }
-    serialized = json.dumps({"G": sorted_G, "n": n}, sort_keys=true).encode()
+    serialized = json.dumps({"G": sorted_G, "n": n, "colours": colours,
+      "labels": labels}, sort_keys=true, default=str).encode()
     png_filename = f"/tmp/graph_{hashlib.sha256(serialized).hexdigest()[:16]}.png"
   try
     from graphviz import Digraph, Graph
@@ -152,9 +180,16 @@ def draw_graphviz(
   print "\n"
   all_nodes = set(G.keys())
   edges = [(src, dst, weight) for src in G for dst, weight in _items(G[src])]
+  if not directed
+    # an undirected adjacency lists each edge from both ends: draw it once
+    edges = [(src, dst, w) for src, dst, w in edges
+      if str(src) <= str(dst) or src not in G.get(dst, {})]
   all_nodes.update(dst for _, dst, _ in edges)
   if n is not none
     all_nodes.update(range(n))
+  for spec in (colours, labels)
+    if isinstance(spec, (list, str))
+      all_nodes.update(range(len(spec)))
   dot = (directed ? Digraph : Graph)(comment="The Graph")
   dot.attr(rankdir="TB")
   dot.attr(bgcolor="transparent")
@@ -162,7 +197,7 @@ def draw_graphviz(
     fontcolor="white")
   dot.edge_attr.update(color="blue", fontcolor="white")
   for node in sort(all_nodes, by=str)  # Sort for consistent order
-    dot.node(str(node))
+    dot.node(str(node), **_node_attrs(_per_node(colours, node), _per_node(labels, node)))
   for src, dst, weight in edges
     for one in (isinstance(weight, list) ? weight : [weight])
       dot.edge(str(src), str(dst), **_edge_attrs(one, show_weights))
@@ -178,6 +213,17 @@ def draw_graphviz(
     except Exception as e
       print f"Failed to render/display PNG: {e}"
       print f"\nDOT source:\n\n{dot.source}"
+
+def _node_attrs(colour, label) -> {str: str}
+  """Graphviz attributes for one node: its fill colour, with dark text
+  on a light fill, and its label on a line under the name."""
+  ret attrs = {}
+  if colour is not none
+    attrs["fillcolor"] = _node_colour(colour)
+    if attrs["fillcolor"] in _LIGHT
+      attrs["fontcolor"] = "black"
+  if label is not none
+    attrs["label"] = f"\\N\\n{label}"
 
 def _edge_attrs(weight, show_weights: bool) -> {str: str}
   """Graphviz attributes for one edge label: a colour name (or 0/1)

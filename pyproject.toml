@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 # "pydsa" is taken on PyPI (a dormant 2018 upload) and "dsa-py" is too close
 # to the existing "dsapy"; the import name stays pydsa
 name = "pizza-lib"
-version = "0.8.0"
+version = "0.9.0"
 description = "Data structure and algorithm helpers for LeetCode-style Python: grids, adjacency, binary search bounds, heaps, trees, linked lists."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -18,7 +18,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries",
     "Topic :: Education",
 ]
-dependencies = ["mu-language>=0.13.0"]  # the modules written in mu import through it
+dependencies = ["mu-language>=0.14.0"]  # the modules written in mu import through it
 
 [project.urls]
 Homepage = "https://github.com/shyal/pydsa"
@@ -27,7 +27,7 @@ Documentation = "https://www.shyal.com/pydsa/"
 
 [project.optional-dependencies]
 # pymdown-extensions 12 breaks mkdocstrings 1.0 (Highlight.__init__ needs md)
-docs = ["mkdocs-material>=9.5", "mkdocstrings[python]>=0.27", "pymdown-extensions<12", "ruff", "mu-language>=0.13.0"]
+docs = ["mkdocs-material>=9.5", "mkdocstrings[python]>=0.27", "pymdown-extensions<12", "ruff", "mu-language>=0.14.0"]
 draw = ["rich", "colorama", "PrettyPrintTree", "graphviz", "tabulate", "networkx", "phart"]
 test = ["pytest"]
 
