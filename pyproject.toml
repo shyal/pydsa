@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 # "pydsa" is taken on PyPI (a dormant 2018 upload) and "dsa-py" is too close
 # to the existing "dsapy"; the import name stays pydsa
 name = "pizza-lib"
-version = "0.9.0"
+version = "0.10.0"
 description = "Data structure and algorithm helpers for LeetCode-style Python: grids, adjacency, binary search bounds, heaps, trees, linked lists."
 readme = "README.md"
 requires-python = ">=3.10"
