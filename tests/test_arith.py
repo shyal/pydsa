@@ -1,5 +1,5 @@
 import pytest
-from pydsa.arith import factorial, primes
+from pydsa.arith import factorial, prime, primes
 
 
 def test_factorial_small():
@@ -62,3 +62,11 @@ def test_primes_bounds_or_count():
         primes(10, count=3)
     with pytest.raises(ValueError):
         primes()
+
+
+def test_prime():
+    assert not prime(-7) and not prime(0) and not prime(1)
+    assert prime(2) and prime(3) and not prime(4) and prime(5)
+    assert not prime(25) and not prime(49) and prime(97) and not prime(91)
+    assert [n for n in range(200) if prime(n)] == primes(199)
+    assert prime(1000000007) and not prime(1000000007 * 1000000009)

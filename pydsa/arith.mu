@@ -21,6 +21,23 @@ def batched(s: Sequence, n: int=1) -> list
   """s cut into pieces of n; the last piece holds what is left."""
   [s[i:i + n] for i in range(0, len(s), n)]
 
+def prime(n: int) -> bool
+  """True when n is a prime: 2, 3, 5, 7, 11, ... prime(1) and prime(0) are
+  False, and so is every negative n. Trial division by 2, 3 and then
+  6k - 1 and 6k + 1 up to the square root, O(sqrt n)."""
+  if n < 2
+    return False
+  if n < 4
+    return True
+  if n % 2 == 0 or n % 3 == 0
+    return False
+  ret d = 5
+  while d * d <= n
+    if n % d == 0 or n % (d + 2) == 0
+      return False
+    d += 6
+  True
+
 def primes(lo: int?=none, hi: int?=none, count: int?=none) -> [int]
   """The primes from lo to hi, both ends included, in order; primes(n)
   alone is the primes up to n, and primes(count=k) the first k primes.
