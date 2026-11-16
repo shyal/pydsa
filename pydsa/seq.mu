@@ -50,3 +50,42 @@ def max_diff(
   ys = [key is none ? x : key(x) for x in xs]
   ys = reverse ? [-y for y in ys] : ys
   scan(max, (y - lo for y, lo in zip(ys[1:], scan(min, ys))), type=list)
+
+def subsequence_indices(
+  s: Sequence[Any], sub: Sequence[Any], from_right: bool=false,
+  partial: bool=false
+) -> [int]
+  """The earliest indices of s at which sub is a subsequence of s: one
+  index per item of sub, in increasing order. [] when sub is not a
+  subsequence of s.
+
+  from_right matches from the right end: the latest indices, still in
+  increasing order.
+
+  partial returns the indices of the items that match before the first
+  item with no match: a prefix of sub, or a suffix of sub with from_right.
+
+  >>> subsequence_indices("abcabc", "ac")
+  [0, 2]
+  >>> subsequence_indices("abcabc", "ac", from_right=True)
+  [3, 5]
+  >>> subsequence_indices([5, 1, 5, 2], [5, 2])
+  [0, 3]
+  >>> subsequence_indices("abc", "acb")
+  []
+  >>> subsequence_indices("abc", "acb", partial=True)
+  [0, 2]
+  >>> subsequence_indices("abc", "bac", from_right=True, partial=True)
+  [0, 2]
+  """
+  if from_right
+    n = len(s)
+    return [n - 1 - i for i in subsequence_indices(s[::-1], sub[::-1], partial=partial)][::-1]
+  ret res = []
+  j = -1
+  for c in sub
+    try
+      j = s.index(c, j + 1)
+    except ValueError
+      return partial ? res : []
+    res <- j

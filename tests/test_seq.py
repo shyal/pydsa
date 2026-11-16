@@ -1,4 +1,4 @@
-from pydsa.seq import lcs, max_diff
+from pydsa.seq import lcs, max_diff, subsequence_indices
 
 
 def test_lcs_is_the_length_by_default():
@@ -57,3 +57,68 @@ def test_max_diff_solves_121_and_2874():
     # 2874. Maximum Value of an Ordered Triplet II
     a = [12, 6, 1, 2, 7]
     assert max([0, *(f * x for f, x in zip(max_diff(a, reverse=True), a[2:]))]) == 77
+
+
+def test_subsequence_indices_are_the_earliest_indices():
+    assert subsequence_indices("abcabc", "ac") == [0, 2]
+    assert subsequence_indices("aab", "ab") == [0, 2]
+
+
+def test_subsequence_indices_from_right_are_the_latest_indices():
+    assert subsequence_indices("abcabc", "ac", from_right=True) == [3, 5]
+    assert subsequence_indices("abb", "ab", from_right=True) == [0, 2]
+
+
+def test_subsequence_indices_take_a_repeated_item_at_separate_indices():
+    assert subsequence_indices("banana", "aa") == [1, 3]
+    assert subsequence_indices("banana", "aa", from_right=True) == [3, 5]
+
+
+def test_subsequence_indices_work_on_lists_and_tuples():
+    assert subsequence_indices([5, 1, 5, 2], [5, 2]) == [0, 3]
+    assert subsequence_indices((5, 1, 5, 2), (5, 2), from_right=True) == [2, 3]
+
+
+def test_subsequence_indices_of_an_empty_sub_are_empty():
+    assert subsequence_indices("abc", "") == []
+    assert subsequence_indices("abc", "", from_right=True) == []
+
+
+def test_subsequence_indices_are_empty_when_sub_is_not_a_subsequence():
+    for from_right in (False, True):
+        assert subsequence_indices("abc", "ca", from_right=from_right) == []
+        assert subsequence_indices("abc", "aa", from_right=from_right) == []
+        assert subsequence_indices("", "a", from_right=from_right) == []
+        assert subsequence_indices([1, 2], [3], from_right=from_right) == []
+
+
+def test_subsequence_indices_partial_are_the_indices_of_the_matched_prefix():
+    assert subsequence_indices("abc", "acb", partial=True) == [0, 2]
+    assert subsequence_indices("abc", "xa", partial=True) == []
+    assert subsequence_indices("abc", "ax", partial=True) == [0]
+
+
+def test_subsequence_indices_partial_from_right_are_those_of_the_matched_suffix():
+    assert subsequence_indices("abc", "bac", from_right=True, partial=True) == [0, 2]
+    assert subsequence_indices("abc", "cx", from_right=True, partial=True) == []
+    assert subsequence_indices("abc", "xc", from_right=True, partial=True) == [2]
+
+
+def test_subsequence_indices_partial_of_a_full_match_is_the_full_match():
+    for from_right in (False, True):
+        for s, sub in (("abcabc", "ac"), ("banana", "aa"), ("abc", "")):
+            assert subsequence_indices(s, sub, from_right, partial=True) == subsequence_indices(s, sub, from_right)
+
+
+def test_subsequence_indices_agree_with_a_brute_force():
+    from itertools import combinations, product
+
+    for s in map("".join, product("ab", repeat=5)):
+        for sub in map("".join, product("ab", repeat=2)):
+            hits = [list(c) for c in combinations(range(5), 2) if all(s[i] == x for i, x in zip(c, sub))]
+            if hits:
+                assert subsequence_indices(s, sub) == min(hits)
+                assert subsequence_indices(s, sub, from_right=True) == max(hits, key=lambda h: h[::-1])
+            else:
+                assert subsequence_indices(s, sub) == []
+                assert subsequence_indices(s, sub, from_right=True) == []
