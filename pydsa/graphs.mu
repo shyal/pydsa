@@ -7,6 +7,13 @@ from typing import Any, List
 
 from .nodes import GraphNode
 
+_COLOURS = ("red", "blue", "green", "yellow", "magenta", "cyan", "white", "black")
+# the one-letter colour codes LeetCode uses in a colours string
+_LETTER_COLOURS = {"R": "red", "G": "green", "B": "blue", "Y": "yellow",
+  "W": "white", "M": "magenta", "C": "cyan", "K": "black"}
+# fills too light for white text
+_LIGHT = ("white", "yellow", "cyan", "green")
+
 def draw_graph(G: {Any: dict | Any}) -> none
   """
   Utility function to draw a graph (stored as dict of dicts, dict of lists, or dict with (row, col) tuples as keys) in the terminal as a colored adjacency matrix.
@@ -97,8 +104,6 @@ def _labelled_neighbors(nbrs) -> dict
       label = (isinstance(out[dst], list) ? out[dst] : [out[dst]]) + [label]
     out[dst] = label
 
-_COLOURS = ("red", "blue", "green", "yellow", "magenta", "cyan", "white", "black")
-
 def _edge_colour(label) -> str?
   if isinstance(label, str) and label.lower() in _COLOURS
     return label.lower()
@@ -125,12 +130,6 @@ def _items(nbrs)
     [(dst, none) for dst in nbrs]
   else
     raise ValueError("Invalid graph format")
-
-# the one-letter colour codes LeetCode uses in a colours string
-_LETTER_COLOURS = {"R": "red", "G": "green", "B": "blue", "Y": "yellow",
-  "W": "white", "M": "magenta", "C": "cyan", "K": "black"}
-# fills too light for white text
-_LIGHT = ("white", "yellow", "cyan", "green")
 
 def _per_node(spec, node)
   """spec[node] for a dict, list or string of per-node values; none when
