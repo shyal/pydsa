@@ -89,3 +89,31 @@ def subsequence_indices(
     except ValueError
       return partial ? res : []
     res <- j
+
+def run_lengths(
+  xs: Sequence[Any], extends: (Any, Any) -> bool, from_right: bool=false
+) -> [int]
+  """The length of the run that ends at each index of xs: one value per
+  item. A run is a stretch of items in which every pair of neighbours a, b
+  satisfies extends(a, b). An item whose left neighbour fails extends(a, b)
+  starts a new run of length 1.
+
+  from_right gives the length of the run that starts at each index
+  instead. extends still takes the pair in index order, left item first.
+
+  >>> run_lengths([5, 3, 3, 4, 2], (a, b) -> a >= b)
+  [1, 2, 3, 1, 2]
+  >>> run_lengths([5, 3, 3, 4, 2], (a, b) -> a <= b, from_right=True)
+  [1, 3, 2, 1, 1]
+  >>> run_lengths([1, 2, 3, 9, 10], (a, b) -> b - a == 1)
+  [1, 2, 3, 1, 2]
+  >>> run_lengths("aab", (a, b) -> a == b)
+  [1, 2, 1]
+  >>> run_lengths([], (a, b) -> a < b)
+  []
+  """
+  if from_right
+    return run_lengths(xs[::-1], (a, b) -> extends(b, a))[::-1]
+  if not xs
+    return []
+  scan((r, p) -> r + 1 if extends(*p) else 1, zip(xs, xs[1:]), initial=1, type=list)

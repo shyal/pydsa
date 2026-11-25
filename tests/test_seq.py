@@ -1,4 +1,4 @@
-from pydsa.seq import lcs, max_diff, subsequence_indices
+from pydsa.seq import lcs, max_diff, run_lengths, subsequence_indices
 
 
 def test_lcs_is_the_length_by_default():
@@ -122,3 +122,21 @@ def test_subsequence_indices_agree_with_a_brute_force():
             else:
                 assert subsequence_indices(s, sub) == []
                 assert subsequence_indices(s, sub, from_right=True) == []
+
+
+def test_run_lengths_end_at_each_index():
+    assert run_lengths([5, 3, 3, 4, 2], lambda a, b: a >= b) == [1, 2, 3, 1, 2]
+
+
+def test_run_lengths_from_right_start_at_each_index():
+    assert run_lengths([5, 3, 3, 4, 2], lambda a, b: a <= b, from_right=True) == [1, 3, 2, 1, 1]
+
+
+def test_run_lengths_extends_takes_the_pair_in_index_order_from_right():
+    assert run_lengths([1, 2, 3, 9, 10], lambda a, b: b - a == 1, from_right=True) == [3, 2, 1, 2, 1]
+
+
+def test_run_lengths_of_a_string_and_of_nothing():
+    assert run_lengths("aab", lambda a, b: a == b) == [1, 2, 1]
+    assert run_lengths([], lambda a, b: a < b) == []
+    assert run_lengths([7], lambda a, b: a < b) == [1]
